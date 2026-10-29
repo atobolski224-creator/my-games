@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Classroom</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --accent: #4ade80;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --border: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: var(--bg-secondary);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--accent);
+        }
+
+        .nav-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #3d3d3d;
+        }
+
+        .nav-btn.danger {
+            color: #ff6b6b;
+        }
+
+        /* Main Shell Layout */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left Control Panel Panel */
+        .control-panel {
+            width: 280px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 15px;
+            gap: 20px;
+        }
+
+        .panel-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        /* Custom Custom Checkboxes */
+        .checkbox-container {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .checkbox-container input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-tertiary);
+            transition: .3s;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 12px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-muted);
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: var(--bg-primary);
+        }
+
+        /* Icon Mask Configurator Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .icon-option {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-option:hover, .icon-option.active {
+            border-color: var(--accent);
+            background: #353535;
+        }
+
+        .icon-option svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        .icon-option span {
+            font-size: 9px;
+            text-align: center;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        /* Game Catalog Grid Container */
+        .catalog-container {
+            flex: 1;
+            background-color: var(--bg-primary);
+            padding: 20px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-auto-rows: max-content;
+            gap: 15px;
+        }
+
+        .game-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            aspect-ratio: 1;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .game-thumb {
+            flex: 1;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            position: relative;
+        }
+
+        .game-info {
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .game-title {
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Dedicated Core Canvas Execution Frame Environment */
+        .stage-container {
+            display: none;
+            flex: 1;
+            background: #000000;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stage-canvas {
+            background: #050505;
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: monospace;
+            font-size: 16px;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        /* Panic Screen Overlay Mask */
+        #panic-mask {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: white;
+            color: black;
+            z-index: 10000;
+            display: none;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: "Arial", sans-serif;
+            user-select: text;
+        }
+
+        /* Drop Zone */
+        .file-dropzone {
+            border: 2px dashed var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .file-dropzone:hover {
+            border-color: var(--accent);
+        }
+
+        #hidden-file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Utility Bar -->
+    <div class="navbar">
+        <div class="nav-left">
+            <div class="nav-brand">
+                <div class="nav-icon" id="live-nav-indicator"></div>
+                <span id="live-nav-title">System Panel</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" id="btn-back-menu" style="display: none;">Main Menu</button>
+            <button class="nav-btn danger" id="btn-panic-force">Panic! (Esc)</button>
+        </div>
+    </div>
+
+    <!-- Active Structural Frame Engine Workspace -->
+    <div class="workspace">
+        
+        <!-- Persistent Side Control Config Panel -->
+        <div class="control-panel">
+            
+            <div class="panel-section">
+                <div class="section-title">Identity Cloaking</div>
+                <div class="icon-grid">
+                    <div class="icon-option active" data-type="none" data-title="System Panel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+                        <span>None</span>
+                    </div>
