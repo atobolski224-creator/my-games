@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bubble Snood</title>
+<style>
+body {
+  background: #17152e;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+}
+canvas {
+  background: #25234b;
+  border: 3px solid #777;
+  border-radius: 12px;
+  max-width: 95vw;
+}
+button {
+  padding: 12px 25px;
+  margin: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🎯 BUBBLE SNOOD</h1>
+<p>Match 3 or more bubbles to clear them!</p>
+<canvas id="game" width="480" height="620"></canvas>
+<p id="score">Score: 0</p>
+<button onclick="restart()">Restart</button>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const colors = ["#ff5252","#40c4ff","#69f0ae","#ffd740","#e040fb"];
+const size = 24;
+const rows = 10;
+const cols = 10;
+let board, shooter, score, angle, gameOver;
+
+function restart() {
+  board = [];
+  score = 0;
+  angle = Math.PI / 2;
+  gameOver = false;
+
+  for(let r=0;r<rows;r++) {
+    board[r]=[];
+    for(let c=0;c<cols;c++) {
+      board[r][c] = r < 5
+        ? colors[Math.floor(Math.random()*colors.length)]
+        : null;
+    }
+  }
+
+  shooter = randomColor();
+  draw();
+}
+
+function randomColor() {
+  return colors[Math.floor(Math.random()*colors.length)];
+}
+
+function neighbors(r,c) {
+  let even = r%2===0;
+  return [
+    [r,c-1],[r,c+1],
+    [r-1,c+(even?-1:0)],
+    [r-1,c+(even?0:1)],
+    [r+1,c+(even?-1:0)],
+    [r+1,c+(even?0:1)]
+  ].filter(([y,x]) =>
+    y>=0 && y<rows && x>=0 && x<cols
+  );
+}
+
+function position(r,c) {
+  return {
+    x: 24+c*48+(r%2)*24,
+    y: 24+r*42
+  };
+}
+
+function drawBubble(x,y,color) {
+  ctx.beginPath();
+  ctx.arc(x,y,size,0,Math.PI*2);
+  ctx.fillStyle=color;
+  ctx.fill();
+  ctx.strokeStyle="white";
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
+
+function draw() {
+  ctx.clearRect(0,0,480,620);
+
+  for(let r=0;r<rows;r++) {
+    for(let c=0;c<cols;c++) {
+      if(board[r][c]) {
+        let p=position(r,c);
+        drawBubble(p.x,p.y,board[r][c]);
+      }
+    }
+  }
+
+  let sx=240, sy=565;
+  ctx.beginPath();
+  ctx.moveTo(sx,sy);
+  ctx.lineTo(
+    sx+Math.cos(angle)*75,
+    sy-Math.sin(angle)*75
+  );
+  ctx.strokeStyle="white";
+  ctx.lineWidth=4;
+  ctx.stroke();
+
+  drawBubble(sx,sy,shooter);
+
+  ctx.fillStyle="white";
+  ctx.font="18px Arial";
+  ctx.fillText("Score: "+score,15,610);
+
+  if(gameOver) {
+    ctx.font="38px Arial";
+    ctx.fillStyle="#ffd740";
+    ctx.fillText("GAME OVER!",110,310);
+  }
+}
+
+function getGroup(r,c,color,seen=new Set()) {
+  let key=r+","+c;
+  if(seen.has(key) || !board[r] ||
+     board[r][c]!==color) return [];
+
+  seen.add(key);
+  let group=[[r,c]];
+
+  for(let [y,x] of neighbors(r,c)) {
+    group.push(...getGroup(y,x,color,seen));
+  }
+  return group;
+}
+
+function shoot() {
+  if(gameOver) return;
+
+  let x=240,y=565;
+  let vx=Math.cos(angle)*7;
+  let vy=-Math.sin(angle)*7;
+
+  function move() {
+    x+=vx;
+    y+=vy;
+
+    if(x<24 || x>456) vx=-vx;
+
+    let hit = y<24;
+
+    for(let r=0;r<rows;r++) {
+      for(let c=0;c<cols;c++) {
+        if(board[r][c]) {
+          let p=position(r,c);
+          if(Math.hypot(x-p.x,y-p.y)<size*2) hit=true;
+        }
+      }
+    }
+
+    if(hit) {
+      let best=null,dist=Infinity;
+
+      for(let r=0;r<rows;r++) {
+        for(let c=0;c<cols;c++) {
+          if(!board[r][c]) {
+            let p=position(r,c);
+            let d=Math.hypot(x-p.x,y-p.y);
+            if(d<dist) {
+              dist=d;
+              best=[r,c];
+            }
+          }
+        }
+      }
+
+      if(best) {
+        let [r,c]=best;
+        board[r][c]=shooter;
+
+        let group=getGroup(r,c,shooter);
+        if(group.length>=3) {
+          group.forEach(([y,x])=>board[y][x]=null);
+          score+=group.length*10;
+        }
+
+        if(board[rows-1].some(Boolean)) gameOver=true;
+
+        shooter=randomColor();
+        draw();
+        return;
+      }
+    }
+
+    draw();
+    if(y>20) requestAnimationFrame(move);
+  }
+
+  move();
+}
+
+canvas.addEventListener("mousemove",e=>{
+  let rect=canvas.getBoundingClientRect();
+  let x=(e.clientX-rect.left)*480/rect.width;
+  let y=(e.clientY-rect.top)*620/rect.height;
+  angle=Math.atan2(565-y,x-240);
+  angle=Math.max(0.15,Math.min(Math.PI-0.15,angle));
+  draw();
+});
+
+canvas.addEventListener("click",shoot);
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft") angle=Math.min(Math.PI-0.15,angle+0.1);
+  if(e.key==="ArrowRight") angle=Math.max(0.15,angle-0.1);
+  if(e.key===" ") shoot();
+  draw();
+});
+
+restart();
+</script>
+</body>
+</html>
