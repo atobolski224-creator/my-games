@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate HTML5 Gaming Hub</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .featured-section {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+        }
+
+        .featured-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 2px solid #a855f7;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.2);
+        }
+
+        .featured-card h2 {
+            color: #c084fc;
+            margin-top: 0;
+            font-size: 2rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .game-card h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1.3rem;
+        }
+
+        .game-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .play-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.2s;
+            margin-top: 15px;
+        }
+
+        .play-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .featured-card .play-btn {
+            background-color: #a855f7;
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+        }
+
+        .featured-card .play-btn:hover {
+            background-color: #9333ea;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HTML5 Arcade Center</h1>
+        <p>Your one-stop dashboard for web games and platforms</p>
+    </header>
+
+    <!-- Featured Spotlight Game -->
+    <section class="featured-section">
+        <div class="featured-card">
+            <h2>🏎️ Car King Arena</h2>
+            <p>Rule the asphalt, smash into your rivals, and claim your crown in this high-octane 3D HTML5 driving arena game.</p>
+            <!-- Replace the '#' below with your actual game file path or URL -->
+            <a href="#" target="_blank" class="play-btn">Launch Car King Arena</a>
+        </div>
+    </section>
+
+    <!-- Massive Games Grid -->
+    <main class="grid-container">
+        
+        <div class="game-card">
+            <h3>Poki Games</h3>
+            <p>Access thousands of free instant-play HTML5 games across sports, puzzles, and action genres.</p>
+            <a href="https://poki.com" target="_blank" class="play-btn">Open Poki</a>
+        </div>
+
+        <div class="game-card">
+            <h3>CrazyGames</h3>
+            <p>A massive portal featuring the latest full-screen unblocked HTML5 games, driving simulators, and multiplayer shooters.</p>
+            <a href="https://crazygames.com" target="_blank" class="play-btn">Open CrazyGames</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Armor Games</h3>
+            <p>Classic web arcade featuring premium indie HTML5 titles, strategy tower defense, and expansive RPGs.</p>
+            <a href="https://armorgames.com" target="_blank" class="play-btn">Open Armor</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Itch.io (HTML5)</h3>
+            <p>Browse thousands of unique, experimental, and brilliant indie browser games created by global creators.</p>
+            <a href="https://itch.io" target="_blank" class="play-btn">Browse Itch.io</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Kongregate</h3>
+            <p>The veteran web gaming portal filled with open-ended achievements, idle games, and classic community gems.</p>
+            <a href="https://kongregate.com" target="_blank" class="play-btn">Open Kongregate</a>
+        </div>
+
+        <div class="game-card">
+            <h3>MiniClip</h3>
+            <p>The home of multiplayer 8-Ball Pool, classic sports titles, and quick-session arcade games.</p>
+            <a href="https://miniclip.com" target="_blank" class="play-btn">Open MiniClip</a>
+        </div>
+
+        <div class="game-card">
+            <h3>GameDistribution</h3>
+            <p>A vast repository of lightweight, optimized HTML5 games perfect for quick mobile or desktop browser sessions.</p>
+            <a href="https://gamedistribution.com" target="_blank" class="play-btn">Browse Games</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Y8 Games</h3>
+            <p>A massive library spanning classic retro emulations, unity-ported web games, and extensive car driving maps.</p>
+            <a href="https://y8.com" target="_blank" class="play-btn">Open Y8</a>
+        </div>
+
+        <div class="game-card">
+            <h3>RetroGames.cz</h3>
+            <p>Play thousands of old-school console and arcade games perfectly emulated directly inside your HTML5 browser.</p>
+            <a href="http://retrogames.cz" target="_blank" class="play-btn">Play Retro</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Scirra Arcade</h3>
+            <p>A collection of high-performance 2D arcade games built entirely using the Construct HTML5 engine.</p>
+            <a href="https://construct.net" target="_blank" class="play-btn">View Arcade</a>
+        </div>
+
+        <div class="game-card">
+            <h3>PlayCanvas Showcase</h3>
+            <p>Experience stunning, near-console-quality 3D graphics built entirely using modern WebGL and HTML5 standards.</p>
+            <a href="https://playcanvas.com" target="_blank" class="play-btn">View 3D Demos</a>
+        </div>
+
+        <div class="game-card">
+            <h3>Phaser Sandbox</h3>
+            <p>Check out community-made creations and games running on the lightweight Phaser HTML5 framework.</p>
+            <a href="https://phaser.io" target="_blank" class="play-btn">Open Phaser</a>
+        </div>
+
+    </main>
+
+</body>
+</html>
+
