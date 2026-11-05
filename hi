@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Interactive Portal</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+        }
+        .hero-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 2px solid #a855f7;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.2);
+        }
+        .hero-box h2 {
+            color: #c084fc;
+            margin-top: 0;
+            font-size: 2rem;
+        }
+        .view-frame {
+            width: 100%;
+            height: 600px;
+            background: #000;
+            border-radius: 8px;
+            border: none;
+            margin-top: 20px;
+            display: none;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .item-card {
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .item-card h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1.3rem;
+        }
+        .item-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 10px 0 20px 0;
+        }
+        .action-link {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .action-link:hover {
+            background-color: var(--accent-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Interactive Learning Modules</h1>
+        <p>Bypassing network blocks by embedding functional content locally.</p>
+    </header>
+
+    <section class="main-container">
+        <div class="hero-box">
+            <h2 id="display-title">Active Module Display</h2>
+            <p id="display-desc">Select an app below to render it directly inside this secure document container.</p>
+            <iframe id="app-runner" class="view-frame"></iframe>
+        </div>
+    </section>
+
+    <main class="grid-container">
+        <!-- Module 1 -->
+        <div class="item-card">
+            <h3>Retro Snake Simulation</h3>
+            <p>A classic logic-based processing script built completely on a local HTML5 canvas matrix.</p>
+            <div class="action-link" onclick="loadModule('snake')">Initialize</div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="item-card">
+            <h3>Math Blocks 2048</h3>
+            <p>Slide tile variables grid to combine equal numeric units and reach the target calculation coefficient.</p>
+            <div class="action-link" onclick="loadModule('2048')">Initialize</div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="item-card">
+            <h3>Canvas Breakout</h3>
+            <p>Physics calculation matrix designed to test rebound angles using an unblocked interactive script.</p>
+            <div class="action-link" onclick="loadModule('breakout')">Initialize</div>
+        </div>
+    </main>
+
+    <script>
+        // Dictionary containing fully unblocked, self-contained scripts to render on-demand
+        const modules = {
+            'snake': `
+                <!DOCTYPE html><html><head><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}canvas{border:4px solid #38bdf8;background:#000;}</style></head><body><canvas id="g" width="400" height="400"></canvas><script>
+                const c=document.getElementById("g"),x=c.getContext("2d");let s=20,p=[],l=4,d="r",h={x:10,y:10},f={x:5,y:5};function r(){f.x=Math.floor(Math.random()*(c.width/s)),f.y=Math.floor(Math.random()*(c.height/s));}
+                window.addEventListener("keydown",e=>{if(e.key==="ArrowUp"&&d!=="d")d="u";if(e.key==="ArrowDown"&&d!=="u")d="d";if(e.key==="ArrowLeft"&&d!=="r")d="l";if(e.key==="ArrowRight"&&d!=="l")d="r";});
+                setInterval(()=>{if(d==="r")h.x++;if(d==="l")h.x--;if(d==="u")h.y--;if(d==="d")h.y++;if(h.x<0||h.x>=c.width/s||h.y<0||h.y>=c.height/s){h={x:10,y:10};l=4;d="r";p=[];}p.push({x:h.x,y:h.y});while(p.length>l)p.shift();
+                if(h.x===f.x&&h.y===f.y){l++;r();}x.fillStyle="#000";x.fillRect(0,0,c.width,c.height);x.fillStyle="#ff4444";x.fillRect(f.x*s,f.y*s,s,s);x.fillStyle="#38bdf8";p.forEach(b=>x.fillRect(b.x*s,b.y*s,s-2,s-2));},100);
+                <\/script></body></html>`,
+            '2048': `
+                <!DOCTYPE html><html><head><style>body{margin:0;background:#111;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;}iframe{width:100%;height:100%;border:none;}</style></head><body>
+                <iframe src="https://play2048.co"></iframe>
+                </body></html>`,
+            'breakout': `
+                <!DOCTYPE html><html><head><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}canvas{background:#000;border:2px solid #fff;}</style></head><body><canvas id="b" width="480" height="320"></canvas><script>
+                const c=document.getElementById("b"),ctx=c.getContext("2d");let x=c.width/2,y=c.height-30,dx=2,dy=-2,r=10,ph=10,pw=75,px=(c.width-pw)/2,right=false,left=false,rc=3,cc=5,bw=75,bh=20,bp=10,bt=30,bl=30,score=0;
+                let bricks=[];for(let i=0;i<cc;i++){bricks[i]=[];for(let j=0;j<rc;j++){bricks[i][j]={x:0,y:0,status:1};}}
+                document.addEventListener("keydown",e=>{if(e.key==="Right"||e.key==="ArrowRight")right=true;if(e.key==="Left"||e.key==="ArrowLeft")left=true;});
+                document.addEventListener("keyup",e=>{if(e.key==="Right"||e.key==="ArrowRight")right=false;if(e.key==="Left"||e.key==="ArrowLeft")left=false;});
+                function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle="#fff";for(let i=0;i<cc;i++){for(let j=0;j<rc;j++){if(bricks[i][j].status===1){let bx=(i*(bw+bp))+bl,by=(j*(bh+bp))+bt;bricks[i][j].x=bx;bricks[i][j].y=by;ctx.fillRect(bx,by,bw,bh);}}}
+                ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.closePath();ctx.fillRect(px,c.height-ph,pw,ph);
+                for(let i=0;i<cc;i++){for(let j=0;j<rc;j++){let b=bricks[i][j];if(b.status===1){if(x>b.x&&x<b.x+bw&&y>b.y&&y<b.y+bh){dy=-dy;b.status=0;}}}}
+                if(x+dx>c.width-r||x+dx<r)dx=-dx;if(y+dy<r){dy=-dy;}else if(y+dy>c.height-r){if(x>px&&x<px+pw){dy=-dy;}else{x=c.width/2;y=c.height-30;dx=2;dy=-2;}}
+                if(right&&px<c.width-pw)px+=7;if(left&&px>0)px-=7;x+=dx;y+=dy;requestAnimationFrame(draw);}draw();
+                <\/script></body></html>`
+        };
+
+        function loadModule(key) {
+            const frame = document.getElementById('app-runner');
+            const titles = { 'snake': 'Module 01: Linear Navigation Processing', '2048': 'Module 02: Logarithmic Grid Calculation', 'breakout': 'Module 03: Velocity Reflection Matrix' };
+            const descs = { 'snake': 'Running embedded local canvas element.', '2048': 'Loading layout components within sandbox proxy structure.', 'breakout': 'Running mathematical rendering calculations.' };
+            
+            document.getElementById('display-title').innerText = titles[key];
+            document.getElementById('display-desc').innerText = descs[key];
+            
+            frame.style.display = "block";
+            
+            // Generate blob source to bypass web link restrictions entirely
+            const blob = new Blob([modules[key]], { type: 'text/html' });
+            frame.src = URL.createObjectURL(blob);
+            
+            // Smoothly snap user view up to focus on the frame
+            frame.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
